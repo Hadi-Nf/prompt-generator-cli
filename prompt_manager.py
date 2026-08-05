@@ -45,3 +45,35 @@ def delete_prompt(target_id):
             save_prompts(prompts)
             return
     print(f"Prompt with an ID of '{target_id}' could not be found")
+    
+while True:
+    while True:
+        try:
+            user_input = int(input("Please Enter one of the following Options by pressing the number(1-5):\n1. Input a new prompt\n2. View All of your prompts\n3. Update a previous prompt\n4. delete a previous prompt\n5. Quit: "))
+            if 1 <= user_input <= 5:
+                break
+            else:
+                print("Out of range! Please enter a number between 1 and 5.")
+        except ValueError:
+            print("Invalid Input. You must enter a number!")
+    if user_input == 1:
+        prompt_text = input("Please enter your new prompt here:\n")
+        create_prompt(prompt_text)
+    elif user_input == 2:
+        read_prompt()
+    elif user_input == 3:
+        try:
+            updated_prompt_id = int(input("Please input the ID of the prompt you would like to modify: "))
+            updated_prompt = input("Please enter the updated version of your prompt:\n")
+            update_prompt(updated_prompt_id, updated_prompt)
+        except ValueError:
+            print("Invalid input! Please enter an integer value belonging to an ID")
+    elif user_input == 4:
+        try:
+            deletion_prompt_id = int(input("Please input the ID of the prompt you would like to delete!: "))
+            delete_prompt(deletion_prompt_id)
+        except ValueError:
+            print("Invalid input! Please enter an integer value belonging to an ID")
+
+    elif user_input == 5:
+        break
