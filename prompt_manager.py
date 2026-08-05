@@ -39,6 +39,9 @@ def delete_prompt(target_id):
         if prompt['id'] == target_id:
             prompts.remove(prompt)
             print(f"Prompt with ID '{prompt['id']}' and text '{prompt['text']}' has been removed")
+            for remaining_prompt in prompts:
+                if remaining_prompt['id'] > target_id:
+                    remaining_prompt['id'] -= 1
             save_prompts(prompts)
             return
     print(f"Prompt with an ID of '{target_id}' could not be found")
