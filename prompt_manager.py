@@ -67,18 +67,32 @@ def run_prompt_with_ai(target_id):
             return
     print(f"Prompt with an ID of '{target_id}' could not be found")
 
+def display_menu():
+    print("\n--- Main Menu ---")
+    print("1. Input a new prompt")
+    print("2. View All of your prompts")
+    print("3. Update a previous prompt")
+    print("4. Delete a previous prompt")
+    print("5. Run a prompt with AI")
+    print("6. Quit")
+    print("0. Show this menu again")
+    print("-----------------\n")
+
+display_menu()
 
 while True:
     while True:
         try:
-            user_input = int(input("Options 1 to 6:\n1. Input a new prompt\n2. View All of your prompts\n3. Update a previous prompt\n4. delete a previous prompt\n5.Run a prompt with AI\n6. Quit\nPlease Enter one of the following Options by entering the number(1-6): "))
-            if 1 <= user_input <= 6:
+            user_input = int(input("\nEnter an option from 0 to 6 (0 shows the Menu of options): "))
+            if 0 <= user_input <= 6:
                 break
             else:
-                print("Out of range! Please enter a number between 1 and 6.\n")
+                print("Out of range! Please enter a number between 0 and 6.")
         except ValueError:
             print("Invalid Input. You must enter a number!")
-    if user_input == 1:
+    if user_input == 0:
+        display_menu()
+    elif user_input == 1:
         prompt_text = input("Please enter your new prompt here:\n")
         create_prompt(prompt_text)
     elif user_input == 2:
