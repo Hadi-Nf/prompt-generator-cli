@@ -51,15 +51,31 @@ def delete_prompt(target_id):
             save_prompts(prompts)
             return
     print(f"Prompt with an ID of '{target_id}' could not be found")
-    
+def run_prompt_with_ai(target_id):
+    for prompt in prompts:
+        if prompt['id'] == target_id:
+            prompt_text = prompt['text']
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key={API_KEY}"
+            headers = {'Content-Type': 'application/json'}
+            data = {"contents": [{"parts":[{"text": prompt_text}]}]}
+            response = requests.post(url, headers= headers, json=data)
+            full_response = (response.json())
+            AI_response = full_response['candidates'][0]['content']['parts'][0]['text']
+            print("\n--- AI Response ---")
+            print(AI_response)
+            print("-------------------\n")
+            return
+    print(f"Prompt with an ID of '{target_id}' could not be found")
+
+
 while True:
     while True:
         try:
-            user_input = int(input("Please Enter one of the following Options by pressing the number(1-5):\n1. Input a new prompt\n2. View All of your prompts\n3. Update a previous prompt\n4. delete a previous prompt\n5. Quit: "))
-            if 1 <= user_input <= 5:
+            user_input = int(input("Options 1 to 6:\n1. Input a new prompt\n2. View All of your prompts\n3. Update a previous prompt\n4. delete a previous prompt\n5.Run a prompt with AI\n6. Quit\nPlease Enter one of the following Options by entering the number(1-6): "))
+            if 1 <= user_input <= 6:
                 break
             else:
-                print("Out of range! Please enter a number between 1 and 5.")
+                print("Out of range! Please enter a number between 1 and 6.\n")
         except ValueError:
             print("Invalid Input. You must enter a number!")
     if user_input == 1:
@@ -80,6 +96,11 @@ while True:
             delete_prompt(deletion_prompt_id)
         except ValueError:
             print("Invalid input! Please enter an integer value belonging to an ID")
-
     elif user_input == 5:
+        try:
+            AI_prompt_id = int(input("Please input the ID of the prompt you would like to run by in the AI: "))
+            run_prompt_with_ai(AI_prompt_id)
+        except ValueError:
+            print("Invalid input! Please enter an integer value belonging to an ID")
+    elif user_input == 6:
         break
