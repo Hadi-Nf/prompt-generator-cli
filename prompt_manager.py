@@ -58,12 +58,20 @@ def run_prompt_with_ai(target_id):
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key={API_KEY}"
             headers = {'Content-Type': 'application/json'}
             data = {"contents": [{"parts":[{"text": prompt_text}]}]}
-            response = requests.post(url, headers= headers, json=data)
-            full_response = (response.json())
-            AI_response = full_response['candidates'][0]['content']['parts'][0]['text']
-            print("\n--- AI Response ---")
-            print(AI_response)
-            print("-------------------\n")
+            try:
+                response = requests.post(url, headers= headers, json=data)
+                response.raise_for_status()
+                full_response = response.json()
+                AI_response = full_response['candidates'][0]['content']['parts'][0]['text']
+                print("\n--- AI Response ---")
+                print(AI_response)
+                print("-------------------\n")
+            
+            except requests.exceptions.RequestException as e:
+                print(f"\n[!] Connection or API Error: {e}\n")
+            except (KeyError, IndexError): 
+                print("\n[!] Error: The AI returned an unexpected format. It may have been blocked by safety filters.")
+                print("Raw response for debugging:", full_response, "\n")
             return
     print(f"Prompt with an ID of '{target_id}' could not be found")
 
