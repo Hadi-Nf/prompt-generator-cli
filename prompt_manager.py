@@ -28,6 +28,9 @@ def create_prompt(text):
     save_prompts(prompts)
 
 def read_prompt():
+    if len(prompts) == 0:
+        print("\nYou don't have any prompts saved yet!\n")
+        return
     print("Prompts:\n")
     for prompt in prompts:
         print(f"ID = {prompt['id']}, Prompt: {prompt['text']}\n")
@@ -125,4 +128,5 @@ while True:
         except ValueError:
             print("Invalid input! Please enter an integer value belonging to an ID")
     elif user_input == 6:
+        print("\nExiting Prompt Manager. GoodBye!")
         break
